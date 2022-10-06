@@ -4,9 +4,6 @@
 	export let region: string | null = null;
 	export let src: string = '';
 	export let id: string;
-	$: if (!capital || !region) {
-		console.log({ capital, region });
-	}
 </script>
 
 <div class="rounded-md overflow-hidden w-44 shadow-md h-56">
