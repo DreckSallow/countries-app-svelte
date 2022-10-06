@@ -1,5 +1,5 @@
 <script lang="ts">
-	import CountryCard from '$lib/components/country/country-card.svelte';
+	import CountryCard from '$lib/components/specific/country/country-card.svelte';
 	import type { CountryData } from '$lib/types/country';
 	export let countries: CountryData[] = [];
 </script>
