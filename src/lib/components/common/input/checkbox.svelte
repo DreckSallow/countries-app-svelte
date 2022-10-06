@@ -7,12 +7,15 @@
 	export let className: string = '';
 	export let fillCheck: string = 'black';
 	export let classCheck: string = '';
+	let checkElement: HTMLInputElement | null = null;
 
 	const dispatcher = createEventDispatcher();
 	const handleClick = () => {
-		dispatcher('check', {
-			value
-		});
+		if (checkElement?.checked) {
+			dispatcher('check', {
+				value
+			});
+		}
 	};
 </script>
 
@@ -23,6 +26,7 @@
 		class="absolute h-0 w-0 cursor-pointer"
 		on:click={handleClick}
 		bind:value
+		bind:this={checkElement}
 	/>
 	<span
 		class="class-checked h-4 w-4 bg-white left-0 rounded-sm col-span-1 overflow-hidden {classCheck}"
