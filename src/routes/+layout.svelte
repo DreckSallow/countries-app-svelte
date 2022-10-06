@@ -21,7 +21,9 @@
 	};
 </script>
 
-<main class="bg-slate-700 text-white min-h-screen relative min-w-full h-screen overflow-hidden">
+<main
+	class="bg-slate-700 text-white min-h-screen relative min-w-full h-screen overflow-x-hidden overflow-y-auto"
+>
 	{#if showNav}
 		<NavBar navigation={navigator} currentPath={data.pathName}>
 			<Globe />
