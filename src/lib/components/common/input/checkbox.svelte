@@ -19,7 +19,7 @@
 	};
 </script>
 
-<label class="cursor-pointer pl-3 select-none grid items-center {className}">
+<label class="cursor-pointer select-none grid gap-1 items-center {className}">
 	<span class="text col-span-2">{text}</span>
 	<input
 		type="checkbox"
