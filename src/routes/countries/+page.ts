@@ -1,4 +1,7 @@
+import type { Language } from '$lib/types/filters/filter-types';
+import { error } from '@sveltejs/kit';
 import type { Country } from '$lib/types/country';
+import { Net } from '$lib/utils/fetch/fetch';
 import type { PageLoad } from './$types';
 
 interface CountryResponse extends Country {
@@ -6,8 +9,15 @@ interface CountryResponse extends Country {
 		name: string;
 	};
 }
+interface GetTypes {
+	data: {
+		countries: CountryResponse[];
+		getLanguages: Language[];
+	};
+}
+
 const query = `
-	query countries {
+	query types {
 		countries {
 			image
 			id
@@ -17,20 +27,30 @@ const query = `
 			}
 			capital
 		}
+		getLanguages {
+    name,
+    id
+  }
 	}
 `;
 
 export const load: PageLoad = async ({ fetch }) => {
-	const dataFetch = await fetch(' http://localhost:4000/', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			Accept: 'application/json'
+	const { existError, status, content } = await Net.post<GetTypes>(
+		{
+			url: 'http://localhost:4000/',
+			body: JSON.stringify({ query })
 		},
-		body: JSON.stringify({ query: query })
-	});
-	const { data }: { data: { countries: CountryResponse[] } } = await dataFetch.json();
+		fetch
+	);
+	if (existError || content === null) {
+		throw error(status as number, 'Error');
+	}
+	console.log(content?.data);
 	return {
-		countries: data?.countries.map(({ region, ...rest }) => ({ ...rest, region: region?.name }))
+		countries: content.data.countries.map(({ region, ...rest }) => ({
+			...rest,
+			region: region?.name
+		})),
+		languages: content.data.getLanguages
 	};
 };
