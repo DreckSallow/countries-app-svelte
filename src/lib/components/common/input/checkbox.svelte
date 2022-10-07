@@ -9,11 +9,11 @@
 	export let fillCheck = 'black';
 	export let classCheck = '';
 	let checkElement: HTMLInputElement | null = null;
-
 	const dispatcher = createEventDispatcher();
 	const handleClick = () => {
 		dispatcher('check', {
-			value
+			value,
+			selected: checkElement?.checked
 		});
 	};
 </script>
@@ -24,7 +24,7 @@
 		type="checkbox"
 		class="absolute h-0 w-0 cursor-pointer"
 		on:click={handleClick}
-		bind:checked={selected}
+		checked={selected}
 		{value}
 		bind:this={checkElement}
 	/>

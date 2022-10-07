@@ -12,7 +12,8 @@
 	const dispatcher = createEventDispatcher();
 	const handleClick = () => {
 		dispatcher('check', {
-			value
+			value,
+			selected: checkElement?.checked
 		});
 	};
 	// If input have bind:value, then the group not working -_(°v°)_-
