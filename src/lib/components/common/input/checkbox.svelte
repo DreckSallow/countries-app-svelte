@@ -4,9 +4,10 @@
 	type ValueInput = string | number;
 	export let text = '';
 	export let value: ValueInput = '';
-	export let className: string = '';
-	export let fillCheck: string = 'black';
-	export let classCheck: string = '';
+	export let className = '';
+	export let selected = false;
+	export let fillCheck = 'black';
+	export let classCheck = '';
 	let checkElement: HTMLInputElement | null = null;
 
 	const dispatcher = createEventDispatcher();
@@ -23,7 +24,8 @@
 		type="checkbox"
 		class="absolute h-0 w-0 cursor-pointer"
 		on:click={handleClick}
-		bind:value
+		bind:checked={selected}
+		{value}
 		bind:this={checkElement}
 	/>
 	<span

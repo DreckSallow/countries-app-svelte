@@ -2,6 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	type ValueInput = string | number;
 	export let text = '';
+	export let group = text;
 	export let value: ValueInput = '';
 	export let className: string = '';
 	export let name: string = 'relation';
@@ -14,16 +15,18 @@
 			value
 		});
 	};
+	// If input have bind:value, then the group not working -_(°v°)_-
 </script>
 
 <label class="cursor-pointer select-none grid gap-1 items-center {className}">
 	<span class="text col-span-2">{text}</span>
 	<input
+		bind:group
 		type="radio"
 		class="absolute h-0 w-0 cursor-pointer"
 		{name}
 		on:click={handleClick}
-		bind:value
+		{value}
 		bind:this={checkElement}
 	/>
 	<span
