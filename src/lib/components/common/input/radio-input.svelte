@@ -10,11 +10,9 @@
 	let checkElement: HTMLInputElement | null = null;
 	const dispatcher = createEventDispatcher();
 	const handleClick = () => {
-		if (checkElement?.checked) {
-			dispatcher('check', {
-				value
-			});
-		}
+		dispatcher('check', {
+			value
+		});
 	};
 </script>
 

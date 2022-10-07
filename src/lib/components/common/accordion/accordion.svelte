@@ -9,7 +9,7 @@
 	let isClicked = false;
 	const showContent = () => {
 		isClicked = !isClicked;
-		if ($height === 0 && $$slots['content']) height.set(10);
+		if ($height === 0 && $$slots['content']) height.set(8);
 		else height.set(0);
 	};
 </script>
