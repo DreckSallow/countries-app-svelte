@@ -1,4 +1,4 @@
-import type { Language } from '$lib/types/filters/filter-types';
+import type { Language, Region } from '$lib/types/filters/filter-types';
 import { error } from '@sveltejs/kit';
 import type { Country } from '$lib/types/country';
 import { Net } from '$lib/utils/fetch/fetch';
@@ -13,6 +13,7 @@ interface GetTypes {
 	data: {
 		countries: CountryResponse[];
 		getLanguages: Language[];
+		getRegions: Region[];
 	};
 }
 
@@ -28,9 +29,13 @@ const query = `
 			capital
 		}
 		getLanguages {
-    name,
-    id
-  }
+    	name,
+    	id
+  	}
+		getRegions {
+    	name
+    	id
+  	}
 	}
 `;
 
@@ -45,12 +50,12 @@ export const load: PageLoad = async ({ fetch }) => {
 	if (existError || content === null) {
 		throw error(status as number, 'Error');
 	}
-	console.log(content?.data);
 	return {
 		countries: content.data.countries.map(({ region, ...rest }) => ({
 			...rest,
 			region: region?.name
 		})),
-		languages: content.data.getLanguages
+		languages: content.data.getLanguages,
+		regions: content.data.getRegions
 	};
 };
