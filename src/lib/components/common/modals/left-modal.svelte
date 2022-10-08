@@ -25,7 +25,7 @@
 </div>
 
 {#if showModal && $$slots.modalIcon}
-	<section class="absolute left-0 h-full sm:w-60 w-3/6 {classNameModal}" transition:fade>
+	<section class="fixed left-0 h-full sm:w-60 w-3/6 {classNameModal}" transition:fade>
 		<slot name="modalContent" />
 		<button on:click={handleCkick} class="absolute top-0 right-0">X</button>
 	</section>
