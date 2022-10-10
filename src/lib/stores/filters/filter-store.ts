@@ -1,13 +1,20 @@
-import type { FilterContent, FilterStore } from '$lib/types/filters';
-import { writable } from 'svelte/store';
+import { writable, type Subscriber, type Unsubscriber, type Updater } from 'svelte/store';
 
 type updater = <T>(v: T) => T;
-export const createFilterStore = <T extends FilterStore>(filterState: T, updateFn?: updater) => {
+export type createFilterReturn<T> = {
+	subscribe: (this: void, run: Subscriber<T>) => Unsubscriber;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	customUpdate?: (prop: keyof T, fn: (v: any) => any) => void;
+	update: (this: void, updater: Updater<T>) => void;
+	set: (this: void, value: T) => void;
+};
+export const createFilterStore = <T>(filterState: T, updateFn?: updater): createFilterReturn<T> => {
 	const { subscribe, update, set } = writable(filterState);
 	if (updateFn) {
 		return {
 			subscribe,
-			customUpdate: (prop: string, fn: (v: FilterContent) => FilterContent) => {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			customUpdate: (prop: keyof T, fn: (v: any) => any) => {
 				update((prev) => {
 					return {
 						...updateFn(prev),
@@ -15,7 +22,8 @@ export const createFilterStore = <T extends FilterStore>(filterState: T, updateF
 					};
 				});
 			},
-			update
+			update,
+			set
 		};
 	}
 	return {

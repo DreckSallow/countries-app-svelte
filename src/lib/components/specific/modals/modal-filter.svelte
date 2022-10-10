@@ -2,41 +2,101 @@
 	import LeftModal from '$lib/components/common/modals/left-modal.svelte';
 	import FilterIcon from '$lib/components/svg/filters.svelte';
 	import Filter from '$lib/components/specific/filters/filter.svelte';
-	import { createFilterStore } from '$lib/stores/filters/filter-store';
-	import type { FilterCheckInput, FilterStore } from '$lib/types/filters';
+	import type { createFilterReturn } from '$lib/stores/filters/filter-store';
+	import {
+		SortFilter,
+		type FilterCheckInput,
+		type FilterContent,
+		type FilterStore
+	} from '$lib/types/filters';
+	import Switch from '$lib/components/common/input/switch.svelte';
+	import { getContext } from 'svelte';
+	import { ContextKeys } from '$lib/context/keys';
 	type Param = { value: string; selected: boolean };
 
-	/* ------ params ----- */
-	export let filterData: FilterStore = {};
+	type FilterStoreContext = {
+		filters: FilterStore;
+		sort: {
+			[k in SortFilter]: boolean;
+		};
+	};
+	const filterStore: createFilterReturn<FilterStoreContext> = getContext(
+		ContextKeys.filterCountries
+	);
 
-	const filterStore = createFilterStore(filterData, (prev) => prev);
-	const getRadioInput = (k: string, detail: Param) => {
-		filterStore.customUpdate!(k, (part) => ({
-			...part,
-			childs: part?.childs.map((child) => ({ ...child, group: detail.value }))
-		}));
-	};
 	const getCheckInput = (k: string, detail: Param) => {
-		filterStore.customUpdate!(k, (part) => ({
-			...part,
-			childs: (part.childs as FilterCheckInput[]).map((child) => ({
-				...child,
-				selected: child.value === detail.value ? detail.selected : child?.selected
-			}))
-		}));
+		filterStore.customUpdate!('filters', (part: FilterStore) => {
+			const prop = k as unknown as keyof FilterStore;
+
+			return {
+				...part,
+				[prop]: {
+					...part[prop],
+					childs: part[k as keyof FilterContent].childs.map((child) => ({
+						...child,
+						selected:
+							child.value === detail.value ? detail.selected : (child as FilterCheckInput).selected
+					}))
+				}
+			};
+		});
 	};
-	$: accordions = Object.entries($filterStore);
+	const handleSwitch = (e: CustomEvent<any>) => {
+		const { value, selected }: { value: SortFilter; selected: boolean } = e.detail;
+		filterStore.update((store) => {
+			return {
+				...store,
+				sort: {
+					...store.sort,
+					[value]: selected
+				}
+			};
+		});
+	};
+
+	$: accordions = Object.entries($filterStore.filters);
 </script>
 
-<LeftModal queryParent="#layout-app" classNameModal="bg-slate-600 mb-2 p-2 h-5/6">
+<LeftModal queryParent="#layout-app" classNameModal="bg-slate-600 mb-2 p-2 h-5/6 overflow-auto">
 	<FilterIcon
 		className="cursor-pointer fill-slate-800 fill-white"
 		width={30}
 		height={30}
 		slot="modalIcon"
 	/>
-	<div slot="modalContent">
-		<span>Filters</span>
-		<Filter {accordions} handleRadioInput={getRadioInput} handleCheckInput={getCheckInput} />
+	<div slot="modalContent" class="relative">
+		<div class="text-center my-2 mb-3">
+			<span class="block my-2 uppercase font-medium">Filters:</span>
+			<Filter {accordions} handleCheckInput={getCheckInput} />
+		</div>
+		<div class="text-center mt-4">
+			<span class="block mb-2 uppercase font-medium">Sort By:</span>
+			<div class="px-1">
+				<Switch
+					text="Alphabetically"
+					value={SortFilter.alpha}
+					selected={$filterStore.sort[SortFilter.alpha]}
+					on:check={handleSwitch}
+					className="bg-blue-300/40 p-3 mb-3 rounded-md"
+				/>
+				<Switch
+					text="Population"
+					value={SortFilter.population}
+					selected={$filterStore.sort[SortFilter.population]}
+					on:check={handleSwitch}
+					className="bg-blue-300/40 p-3 mb-3 rounded-md"
+				/>
+				<Switch
+					text="Area"
+					value={SortFilter.area}
+					selected={$filterStore.sort[SortFilter.area]}
+					on:check={handleSwitch}
+					className="bg-blue-300/40 p-3 mb-3 rounded-md"
+				/>
+			</div>
+		</div>
+		<button class="p-2 mt-2 bg-blue-300/75 hover:bg-blue-300 rounded-md absolute left-0 right-0">
+			Apply
+		</button>
 	</div>
 </LeftModal>

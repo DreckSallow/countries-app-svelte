@@ -42,23 +42,4 @@
 	:global(.icon) {
 		transition: transform 300ms ease-in;
 	}
-	::-webkit-scrollbar {
-		width: 3px;
-	}
-
-	/* Track */
-	::-webkit-scrollbar-track {
-		background: #cfcaca00;
-	}
-
-	/* Handle */
-	::-webkit-scrollbar-thumb {
-		background: #888;
-		border-radius: 5px;
-	}
-
-	/* Handle on hover */
-	::-webkit-scrollbar-thumb:hover {
-		background: rgb(112, 111, 111);
-	}
 </style>
