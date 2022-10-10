@@ -6,6 +6,9 @@
 	import { setContext } from 'svelte';
 	import { ContextKeys } from '$lib/context/keys';
 	import { createFilterStore } from '$lib/stores/filters/filter-store';
+	import { writable } from 'svelte/store';
+	import { LinkedHelper } from '$lib/utils/structures/linked-list/linked-list';
+	import type { CountryData } from '$lib/types/country';
 	export let data: PageData;
 	let filterData = {
 		filters: {
@@ -40,6 +43,14 @@
 		ContextKeys.filterCountries,
 		createFilterStore(filterData, (prev) => prev)
 	);
+	let nodeList = LinkedHelper.arrayToList<CountryData>(data?.countries ?? [], 8);
+	let countriesStore = writable({
+		countries: data?.countries ?? [],
+		countriesPage: nodeList,
+		currentPage: nodeList.head,
+		currentIndexPage: 1
+	});
+	setContext(ContextKeys.countries, countriesStore);
 </script>
 
 <main class="grid justify-items-center gap-5">
@@ -49,8 +60,44 @@
 		</div>
 		<input type="text" placeholder="search countries...." />
 	</header>
-	<CountryContainer countries={data?.countries ?? []} />
-	<div class="flex flex-row gap-5 items-center">BOTONS</div>
+	<CountryContainer />
+	<div class="pagination-section flex flex-row gap-5 items-center">
+		<button
+			class="bg-blue-400 py-2 px-3 rounded border-none hover:bg-blue-400/75"
+			on:click={() => {
+				if ($countriesStore.currentPage?.prev) {
+					countriesStore.update((v) => {
+						return {
+							...v,
+							currentPage: v.currentPage?.prev ?? null,
+							currentIndexPage: v.currentIndexPage - 1
+						};
+					});
+				}
+			}}
+		>
+			Back
+		</button>
+		<span>
+			Page: {$countriesStore.currentIndexPage}
+		</span>
+		<button
+			class="bg-blue-400 py-2 px-3 rounded border-none hover:bg-blue-400/75"
+			on:click={() => {
+				if ($countriesStore.currentPage?.next) {
+					countriesStore.update((v) => {
+						return {
+							...v,
+							currentPage: v.currentPage?.next ?? null,
+							currentIndexPage: v.currentIndexPage + 1
+						};
+					});
+				}
+			}}
+		>
+			Next
+		</button>
+	</div>
 </main>
 
 <style>

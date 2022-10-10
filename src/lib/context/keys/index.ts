@@ -1,3 +1,4 @@
 export const ContextKeys = {
-	filterCountries: Symbol()
+	filterCountries: Symbol(),
+	countries: Symbol()
 };
