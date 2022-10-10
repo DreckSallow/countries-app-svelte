@@ -7,7 +7,11 @@ export const enum TypeInput {
 	radioInput,
 	checkBoxInput
 }
-
+export const enum SortFilter {
+	population = 'population',
+	alpha = 'alpha',
+	area = 'area'
+}
 export interface FilterRadioInput extends InputCommon {
 	group: string;
 	name: string;
