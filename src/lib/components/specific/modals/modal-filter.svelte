@@ -117,7 +117,7 @@
 
 <LeftModal
 	queryParent="#layout-app"
-	classNameModal="bg-slate-600 mb-2 p-2 h-5/6 overflow-auto"
+	classNameModal="bg-slate-600 mb-2 p-2 h-5/6 overflow-auto rounded-r-md"
 	bind:showModal
 >
 	<FilterIcon
