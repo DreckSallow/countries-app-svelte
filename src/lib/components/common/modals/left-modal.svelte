@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Close from '$lib/components/svg/close.svelte';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	export let queryParent: string = '#app';
@@ -27,7 +28,9 @@
 {#if showModal && $$slots.modalIcon}
 	<section class="fixed left-0 h-full w-4/5 {classNameModal}" transition:fade>
 		<slot name="modalContent" />
-		<button on:click={handleCkick} class="absolute top-0 right-0">X</button>
+		<button on:click={handleCkick} class="absolute top-0 right-0">
+			<Close className="fill-white/75 hover:fill-white" />
+		</button>
 	</section>
 {/if}
 
