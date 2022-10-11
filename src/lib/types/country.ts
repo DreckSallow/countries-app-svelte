@@ -8,3 +8,9 @@ export interface Country {
 export interface CountryData extends Country {
 	region: string;
 }
+
+export interface CountryResponse extends Country {
+	region: {
+		name: string;
+	};
+}

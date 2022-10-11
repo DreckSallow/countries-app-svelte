@@ -18,8 +18,8 @@ interface GetTypes {
 }
 
 const query = `
-	query types {
-		countries {
+	query types($sort: SortCountry) {
+		countries(sort: $sort) {
 			image
 			id
 			name
@@ -43,7 +43,14 @@ export const load: PageLoad = async ({ fetch }) => {
 	const { existError, status, content } = await Net.post<GetTypes>(
 		{
 			url: 'http://localhost:4000/',
-			body: JSON.stringify({ query })
+			body: JSON.stringify({
+				query,
+				variables: {
+					sort: {
+						alpha: true
+					}
+				}
+			})
 		},
 		fetch
 	);

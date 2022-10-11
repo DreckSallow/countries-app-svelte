@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	export let queryParent: string = '#app';
-	export let showModal: boolean = false;
+	export let showModal = false;
 	export let classNameDiv: string = '';
 	export let classNameModal: string = '';
 	let elementContainer: HTMLElement | null = null;
@@ -12,11 +12,11 @@
 	const handleCkick = () => {
 		showModal = !showModal;
 	};
-	$: if (showModal && elementContainer) {
-		elementContainer.style.overflow = 'hidden';
+	if (showModal && elementContainer) {
+		(elementContainer as HTMLElement).style.overflow = 'hidden';
 	}
-	$: if (!showModal && elementContainer) {
-		elementContainer.style.overflow = 'auto';
+	if (!showModal && elementContainer) {
+		(elementContainer as HTMLElement).style.overflow = 'auto';
 	}
 </script>
 

@@ -12,6 +12,11 @@
 	import Switch from '$lib/components/common/input/switch.svelte';
 	import { getContext } from 'svelte';
 	import { ContextKeys } from '$lib/context/keys';
+	import { filterFetch } from '$lib/utils/helpers/filter-fetch';
+	import type { CountryData, CountryResponse } from '$lib/types/country';
+	import { LinkedHelper, NodeList } from '$lib/utils/structures/linked-list/linked-list';
+	import type { Writable } from 'svelte/store';
+	import type { LinkedNode } from '$lib/types/list';
 	type Param = { value: string; selected: boolean };
 
 	type FilterStoreContext = {
@@ -23,6 +28,14 @@
 	const filterStore: createFilterReturn<FilterStoreContext> = getContext(
 		ContextKeys.filterCountries
 	);
+	const countriesContext: Writable<{
+		countries: CountryData[];
+		countriesPage: NodeList<CountryData[]>;
+		currentPage: LinkedNode<CountryData[]> | null;
+		currentIndexPage: number;
+	}> = getContext(ContextKeys.countries);
+
+	let showModal = false;
 
 	const getCheckInput = (k: string, detail: Param) => {
 		filterStore.customUpdate!('filters', (part: FilterStore) => {
@@ -54,10 +67,59 @@
 		});
 	};
 
+	const fetchFilters = () => {
+		const { sort, filters } = $filterStore;
+		const regions = (filters['Continent'].childs as FilterCheckInput[]).reduce<any[]>(
+			(acc, { selected, value }) => {
+				if (selected) {
+					return acc.concat(value);
+				}
+				return acc;
+			},
+			[]
+		);
+		const languages = (filters['Languages'].childs as FilterCheckInput[]).reduce<any[]>(
+			(acc, { selected, value }) => {
+				if (selected) {
+					return acc.concat(value);
+				}
+				return acc;
+			},
+			[]
+		);
+		filterFetch(sort, { languages, regions })
+			.then((d) => {
+				const nodeList = LinkedHelper.arrayToList(
+					(d?.countries as unknown as CountryResponse[]).map((c) => ({
+						...c,
+						region: c.region.name
+					})) ?? [],
+					8
+				);
+				countriesContext.update((p) => {
+					return {
+						...p,
+						countries: d.countries,
+						countriesPage: nodeList,
+						currentPage: nodeList.head,
+						currentIndexPage: 1
+					};
+				});
+				showModal = false;
+			})
+			.catch((e) => {
+				alert('There was an error getting the countries.');
+			});
+	};
+
 	$: accordions = Object.entries($filterStore.filters);
 </script>
 
-<LeftModal queryParent="#layout-app" classNameModal="bg-slate-600 mb-2 p-2 h-5/6 overflow-auto">
+<LeftModal
+	queryParent="#layout-app"
+	classNameModal="bg-slate-600 mb-2 p-2 h-5/6 overflow-auto"
+	bind:showModal
+>
 	<FilterIcon
 		className="cursor-pointer fill-slate-800 fill-white"
 		width={30}
@@ -95,7 +157,10 @@
 				/>
 			</div>
 		</div>
-		<button class="p-2 mt-2 bg-blue-300/75 hover:bg-blue-300 rounded-md absolute left-0 right-0">
+		<button
+			class="p-2 mt-2 bg-blue-300/75 hover:bg-blue-300 rounded-md absolute left-0 right-0"
+			on:click={fetchFilters}
+		>
 			Apply
 		</button>
 	</div>
