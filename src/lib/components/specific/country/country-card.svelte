@@ -21,7 +21,7 @@
 			</span>
 		</div>
 		<a
-			href="/{id}"
+			href="/countries/{id}"
 			class="flex flex-center text-blue-400 text-xs pt-1 hover:underline underline-offset-2 no-underline"
 		>
 			See country
