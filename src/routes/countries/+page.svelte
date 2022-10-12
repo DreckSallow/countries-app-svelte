@@ -8,7 +8,8 @@
 	import { createFilterStore } from '$lib/stores/filters/filter-store';
 	import { writable } from 'svelte/store';
 	import { LinkedHelper } from '$lib/utils/structures/linked-list/linked-list';
-	import type { CountryData } from '$lib/types/country';
+	import type { CountryData, CountryResponse } from '$lib/types/country';
+	import SearchComplete from '$lib/components/common/search/search-complete.svelte';
 	export let data: PageData;
 	let filterData = {
 		filters: {
@@ -51,6 +52,22 @@
 		currentIndexPage: 1
 	});
 	setContext(ContextKeys.countries, countriesStore);
+
+	const handleEnter = (v: string) => {
+		const filterCountries = $countriesStore.countries.filter(({ name }) =>
+			name.toLowerCase().includes(v.toLowerCase())
+		) as unknown as CountryResponse[];
+		const countriesFiltered = filterCountries.map((c) => ({ ...c, region: c.region.name }));
+		let nodeList = LinkedHelper.arrayToList(countriesFiltered, 8);
+		countriesStore.update((p) => {
+			return {
+				...p,
+				countriesPage: nodeList,
+				currentPage: nodeList.head,
+				currentIndexPage: 1
+			};
+		});
+	};
 </script>
 
 <main class="grid justify-items-center gap-5">
@@ -58,7 +75,7 @@
 		<div class="rounded border-white">
 			<ModalFilter />
 		</div>
-		<input type="text" placeholder="search countries...." />
+		<SearchComplete {handleEnter} />
 	</header>
 	<CountryContainer />
 	<div class="pagination-section flex flex-row gap-5 items-center">
@@ -105,6 +122,7 @@
 		border-width: 1px;
 	}
 	main {
+		height: calc(100% - 3.5rem);
 		grid-template-columns: 1fr;
 		grid-template-rows: 50px 1fr 50px;
 	}
