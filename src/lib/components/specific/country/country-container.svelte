@@ -16,8 +16,12 @@
 	$: countriesRender = $countryStore.currentPage?.content ?? [];
 </script>
 
-<section class="flex flex-row flex-wrap gap-8 justify-center align-center">
-	{#each countriesRender as { name, image, capital, id, region }}
-		<CountryCard {name} src={image} {id} {capital} {region} />
-	{/each}
+<section class="flex flex-row flex-wrap gap-8 justify-center items-center">
+	{#if countriesRender.length > 0}
+		{#each countriesRender as { name, image, capital, id, region }}
+			<CountryCard {name} src={image} {id} {capital} {region} />
+		{/each}
+	{:else}
+		<p>The country does not exist</p>
+	{/if}
 </section>
