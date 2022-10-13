@@ -9,6 +9,7 @@ export interface Country {
 	fifa: string | null;
 	population: string;
 	iconFlag: string | null;
+	independent: boolean;
 }
 
 export interface CountryData extends Country {
