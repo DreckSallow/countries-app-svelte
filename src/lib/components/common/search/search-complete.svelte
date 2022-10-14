@@ -43,12 +43,14 @@
 	<SearchInput
 		handleKeydown={(e) => {
 			if (e.key === 'ArrowDown' && value.length > 0) {
+				e.preventDefault();
 				if (indexSelect < items.length - 1) indexSelect += 1;
 				else indexSelect = 0;
 				return;
 			} else if (e.key === 'ArrowUp' && value.length > 0) {
+				e.preventDefault();
 				if (indexSelect > 0) indexSelect -= 1;
-				else indexSelect = items.length - 1;
+				else if (indexSelect === 0) indexSelect = -1;
 				return;
 			}
 
