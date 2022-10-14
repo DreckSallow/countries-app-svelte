@@ -13,10 +13,10 @@
 	const handleCkick = () => {
 		showModal = !showModal;
 	};
-	if (showModal && elementContainer) {
+	$: if (showModal && elementContainer) {
 		(elementContainer as HTMLElement).style.overflow = 'hidden';
 	}
-	if (!showModal && elementContainer) {
+	$: if (!showModal && elementContainer) {
 		(elementContainer as HTMLElement).style.overflow = 'auto';
 	}
 </script>
