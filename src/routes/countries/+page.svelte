@@ -8,7 +8,7 @@
 	import { createFilterStore } from '$lib/stores/filters/filter-store';
 	import { writable } from 'svelte/store';
 	import { LinkedHelper } from '$lib/utils/structures/linked-list/linked-list';
-	import type { CountryData, CountryResponse } from '$lib/types/country';
+	import type { Country, CountryData, CountryResponse } from '$lib/types/country';
 	import SearchComplete from '$lib/components/common/search/search-complete.svelte';
 	export let data: PageData;
 	let filterData = {
@@ -44,7 +44,7 @@
 		ContextKeys.filterCountries,
 		createFilterStore(filterData, (prev) => prev)
 	);
-	let nodeList = LinkedHelper.arrayToList<CountryData>(data?.countries ?? [], 8);
+	let nodeList = LinkedHelper.arrayToList<Country>(data?.countries ?? [], 8);
 	let countriesStore = writable({
 		countries: data?.countries ?? [],
 		countriesPage: nodeList,
@@ -57,7 +57,7 @@
 		const filterCountries = $countriesStore.countries.filter(({ name }) =>
 			name.toLowerCase().includes(v.toLowerCase())
 		) as unknown as CountryResponse[];
-		const countriesFiltered = filterCountries.map((c) => ({ ...c, region: c.region.name }));
+		const countriesFiltered = filterCountries.map((c) => ({ ...c, region: c.region?.name }));
 		let nodeList = LinkedHelper.arrayToList(countriesFiltered, 8);
 		countriesStore.update((p) => {
 			return {
@@ -70,7 +70,7 @@
 	};
 </script>
 
-<main class="grid justify-items-center gap-5">
+<main class="grid justify-items-center gap-5 md:gap-2">
 	<header class="flex flex-row gap-5 items-center">
 		<div class="rounded border-white">
 			<ModalFilter />

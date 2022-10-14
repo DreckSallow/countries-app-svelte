@@ -16,7 +16,7 @@
 	$: countriesRender = $countryStore.currentPage?.content ?? [];
 </script>
 
-<section class="flex flex-row flex-wrap gap-8 justify-center items-center">
+<section class="flex flex-row flex-wrap gap-8 justify-center items-center lg:p-20 md:gap-4">
 	{#if countriesRender.length > 0}
 		{#each countriesRender as { name, image, capital, id, region }}
 			<CountryCard {name} src={image} {id} {capital} {region} />
