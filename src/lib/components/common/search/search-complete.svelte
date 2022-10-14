@@ -80,13 +80,14 @@
 				<li
 					class="hover:bg-blue-300 {i === indexSelect
 						? 'bg-blue-300'
-						: ''} max-h-8 p-2 w-full text-sm cursor-pointer"
+						: ''} max-h-8 p-2 w-full text-sm cursor-pointer text-ellipsis overflow-hidden"
 					on:click={() => {
 						value = '';
 						handleEnter(name);
 						showList = false;
 						indexSelect = -1;
 					}}
+					title={name}
 				>
 					{name}
 				</li>
