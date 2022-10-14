@@ -13,7 +13,7 @@
 		{#if childs?.length}
 			<Accordion>
 				<div slot="header">{key}</div>
-				<div slot="content">
+				<div slot="content" class="text-start">
 					{#each childs as props, i (i)}
 						{#if type === 0}
 							<RadioInput {...props} on:check={(e) => handleRadioInput(key, e.detail)} />

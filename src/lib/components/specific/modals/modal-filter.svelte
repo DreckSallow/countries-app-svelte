@@ -13,7 +13,7 @@
 	import { getContext } from 'svelte';
 	import { ContextKeys } from '$lib/context/keys';
 	import { filterFetch } from '$lib/utils/helpers/filter-fetch';
-	import type { CountryData, CountryResponse } from '$lib/types/country';
+	import type { CountryData } from '$lib/types/country';
 	import { LinkedHelper, NodeList } from '$lib/utils/structures/linked-list/linked-list';
 	import type { Writable } from 'svelte/store';
 	import type { LinkedNode } from '$lib/types/list';
