@@ -1,4 +1,4 @@
-import type { CountryData } from '$lib/types/country';
+import type { CountryResponse } from '$lib/types/country';
 import type { SortFilter } from '$lib/types/filters/index';
 import { Net } from '../fetch/fetch';
 
@@ -22,7 +22,9 @@ type SortProps = {
 type filters = { languages?: string[]; regions?: string[] };
 
 export const filterFetch = async (sort: SortProps, { languages, regions }: filters) => {
-	const { content, existError, status } = await Net.post<{ data: { countries: CountryData[] } }>({
+	const { content, existError, status } = await Net.post<{
+		data: { countries: CountryResponse[] };
+	}>({
 		url: 'http://localhost:4000/',
 		body: JSON.stringify({
 			query,

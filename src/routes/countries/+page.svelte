@@ -56,9 +56,8 @@
 	const handleEnter = (v: string) => {
 		const filterCountries = $countriesStore.countries.filter(({ name }) =>
 			name.toLowerCase().includes(v.toLowerCase())
-		) as unknown as CountryResponse[];
-		const countriesFiltered = filterCountries.map((c) => ({ ...c, region: c.region?.name }));
-		let nodeList = LinkedHelper.arrayToList(countriesFiltered, 8);
+		);
+		let nodeList = LinkedHelper.arrayToList(filterCountries, 8);
 		countriesStore.update((p) => {
 			return {
 				...p,
