@@ -69,51 +69,51 @@
 	};
 </script>
 
-<main class="grid justify-items-center gap-5 md:gap-2">
-	<header class="flex flex-row gap-5 items-center">
+<main class="grid justify-items-center gap-5 md:gap-2 items-center">
+	<header class="flex flex-row gap-5 items-center flex-wrap justify-center mt-3.5">
 		<div class="rounded border-white">
 			<ModalFilter />
 		</div>
 		<SearchComplete {handleEnter} />
+		<div>
+			<button
+				class="bg-blue-400 py-2 px-3 rounded border-none hover:bg-blue-400/75"
+				on:click={() => {
+					if ($countriesStore.currentPage?.prev) {
+						countriesStore.update((v) => {
+							return {
+								...v,
+								currentPage: v.currentPage?.prev ?? null,
+								currentIndexPage: v.currentIndexPage - 1
+							};
+						});
+					}
+				}}
+			>
+				Back
+			</button>
+			<span>
+				{$countriesStore.currentIndexPage} / {$countriesStore.countriesPage.size}
+			</span>
+			<button
+				class="bg-blue-400 py-2 px-3 rounded border-none hover:bg-blue-400/75"
+				on:click={() => {
+					if ($countriesStore.currentPage?.next) {
+						countriesStore.update((v) => {
+							return {
+								...v,
+								currentPage: v.currentPage?.next ?? null,
+								currentIndexPage: v.currentIndexPage + 1
+							};
+						});
+					}
+				}}
+			>
+				Next
+			</button>
+		</div>
 	</header>
 	<CountryContainer />
-	<div class="pagination-section flex flex-row gap-5 items-center">
-		<button
-			class="bg-blue-400 py-2 px-3 rounded border-none hover:bg-blue-400/75"
-			on:click={() => {
-				if ($countriesStore.currentPage?.prev) {
-					countriesStore.update((v) => {
-						return {
-							...v,
-							currentPage: v.currentPage?.prev ?? null,
-							currentIndexPage: v.currentIndexPage - 1
-						};
-					});
-				}
-			}}
-		>
-			Back
-		</button>
-		<span>
-			Page: {$countriesStore.currentIndexPage}
-		</span>
-		<button
-			class="bg-blue-400 py-2 px-3 rounded border-none hover:bg-blue-400/75"
-			on:click={() => {
-				if ($countriesStore.currentPage?.next) {
-					countriesStore.update((v) => {
-						return {
-							...v,
-							currentPage: v.currentPage?.next ?? null,
-							currentIndexPage: v.currentIndexPage + 1
-						};
-					});
-				}
-			}}
-		>
-			Next
-		</button>
-	</div>
 </main>
 
 <style>
@@ -123,6 +123,6 @@
 	main {
 		height: calc(100% - 3.5rem);
 		grid-template-columns: 1fr;
-		grid-template-rows: 50px 1fr 50px;
+		grid-template-rows: 0.1fr 1fr;
 	}
 </style>
