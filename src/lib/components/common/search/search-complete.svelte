@@ -6,6 +6,7 @@
 	import type { NodeList } from '$lib/utils/structures/linked-list/linked-list';
 	import type { CountryData } from '$lib/types/country';
 	import type { LinkedNode } from '$lib/types/list';
+	import { clickOutside } from '$lib/utils/clicks/click-outside';
 	export let handleEnter = (v: string) => {};
 	export let value = '';
 	export let showList = false;
@@ -33,7 +34,12 @@
 	};
 </script>
 
-<div class="relative">
+<div
+	class="relative"
+	use:clickOutside={() => {
+		if (showList) showList = false;
+	}}
+>
 	<SearchInput
 		handleKeydown={(e) => {
 			if (e.key === 'ArrowDown' && value.length > 0) {

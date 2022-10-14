@@ -1,6 +1,7 @@
-export const clickOutside = (node: Node) => {
+export const clickOutside = (node: Node, fn: () => void) => {
 	const handleClick = (event: MouseEvent) => {
 		if (!node.contains(event.target as Node)) {
+			fn();
 			node.dispatchEvent(new CustomEvent('outclick'));
 		}
 	};
