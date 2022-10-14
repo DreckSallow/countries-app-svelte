@@ -8,7 +8,10 @@
 	<div
 		class="card-info w-4/5 sm:w-3/6 h-4/5 sm:h-8/9 lg:w-1/3 flex flex-col p-3 m-3 rounded-lg bg-rata relative"
 	>
-		<a href="/countries" class="absolute top-0 left-0 bg-blue-300 py-1 px-3 rounded">Back</a>
+		<a
+			href="/countries"
+			class="absolute -top-10 sm:top-0 left-16 sm:left-0 bg-blue-400 py-1 px-3 rounded">Back</a
+		>
 		<h3 class="text-center text-xl font-semibold text-blue-300 underline">{data.name}</h3>
 		<ul>
 			<li>
@@ -69,7 +72,7 @@
 		height: calc(100% - 3.5rem);
 	}
 	section a {
-		transform: translateX(-100%);
+		transform: translateX(-105%);
 	}
 	section img {
 		width: 80%;
