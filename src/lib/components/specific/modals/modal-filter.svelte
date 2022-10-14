@@ -89,17 +89,18 @@
 		);
 		filterFetch(sort, { languages, regions })
 			.then((d) => {
-				const nodeList = LinkedHelper.arrayToList(
-					(d?.countries as unknown as CountryResponse[]).map((c) => ({
-						...c,
-						region: c.region.name
-					})) ?? [],
-					8
-				);
+				const cleanCountries: CountryData[] = d.countries.map((c) => ({
+					...c,
+					region: c.region?.name ?? '',
+					borders: c.borders?.map((b) => b.initials) ?? [],
+					languages: c.languages?.map((l) => l.name) ?? []
+				}));
+
+				const nodeList = LinkedHelper.arrayToList(cleanCountries, 8);
 				countriesContext.update((p) => {
 					return {
 						...p,
-						countries: d.countries,
+						countries: cleanCountries,
 						countriesPage: nodeList,
 						currentPage: nodeList.head,
 						currentIndexPage: 1
