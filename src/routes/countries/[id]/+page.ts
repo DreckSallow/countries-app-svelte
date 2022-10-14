@@ -47,6 +47,10 @@ export const load: PageLoad = async ({ params, fetch }): Promise<CountryData> =>
 	if (existError || content === null) {
 		throw error(status as number, 'Error');
 	}
+	if (!content.data.getCountryById) {
+		throw error(404, 'The country does not exist');
+	}
+
 	const { borders, languages, region, icon_flag, ...rest } = content.data.getCountryById;
 	return {
 		...rest,
