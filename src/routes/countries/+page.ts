@@ -3,6 +3,7 @@ import { error } from '@sveltejs/kit';
 import type { Country } from '$lib/types/country';
 import { Net } from '$lib/utils/fetch/fetch';
 import type { PageLoad } from './$types';
+import { ENDPOINT } from '$lib/config/fetch';
 
 interface CountryResponse extends Country {
 	region: {
@@ -42,7 +43,7 @@ const query = `
 export const load: PageLoad = async ({ fetch }) => {
 	const { existError, status, content } = await Net.post<GetTypes>(
 		{
-			url: 'http://localhost:4000/',
+			url: ENDPOINT.url,
 			body: JSON.stringify({
 				query,
 				variables: {
