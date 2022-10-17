@@ -1,3 +1,4 @@
+import { ENDPOINT } from '$lib/config/fetch';
 import type { CountryResponse } from '$lib/types/country';
 import type { SortFilter } from '$lib/types/filters/index';
 import { Net } from '../fetch/fetch';
@@ -25,7 +26,7 @@ export const filterFetch = async (sort: SortProps, { languages, regions }: filte
 	const { content, existError, status } = await Net.post<{
 		data: { countries: CountryResponse[] };
 	}>({
-		url: 'http://localhost:4000/',
+		url: ENDPOINT.url,
 		body: JSON.stringify({
 			query,
 			variables: {

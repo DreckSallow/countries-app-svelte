@@ -2,6 +2,7 @@ import { error } from '@sveltejs/kit';
 import { Net } from '$lib/utils/fetch/fetch';
 import type { PageLoad } from './$types';
 import type { CountryData, CountryResponse } from '$lib/types/country';
+import { ENDPOINT } from '$lib/config/fetch';
 
 const getCountry = `
 	query GetCountryById($id: Int!) {
@@ -33,7 +34,7 @@ export const load: PageLoad = async ({ params, fetch }): Promise<CountryData> =>
 		data: { getCountryById: CountryResponse };
 	}>(
 		{
-			url: 'http://localhost:4000/',
+			url: ENDPOINT.url,
 			body: JSON.stringify({
 				query: getCountry,
 				variables: {
