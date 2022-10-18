@@ -1,3 +1,3 @@
 export const ENDPOINT = {
-	url: 'https://countries-app.onrender.com/'
+	url: import.meta.env.VITE_SERVER_URL || 'http:localhost:3000'
 };
