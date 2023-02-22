@@ -8,7 +8,7 @@
 	import { createFilterStore } from '$lib/stores/filters/filter-store';
 	import { writable } from 'svelte/store';
 	import { LinkedHelper } from '$lib/utils/structures/linked-list/linked-list';
-	import type { Country, CountryData, CountryResponse } from '$lib/types/country';
+	import type { Country } from '$lib/types/country';
 	import SearchComplete from '$lib/components/common/search/search-complete.svelte';
 	export let data: PageData;
 	let filterData = {
